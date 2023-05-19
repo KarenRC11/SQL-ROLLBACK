@@ -1,0 +1,26 @@
+--Esta instrucción nos permite eliminar una operación de "insert", "update" o "delete" en una tabla si no se ha hecho un COMMIT.
+
+--En el ejemplo siguiente se muestra el efecto de revertir una transacción con nombre. 
+
+--Después de crear una tabla, las instrucciones siguientes inician una transacción con nombre, insertan dos filas y luego revierten la transacción con nombre en la variable @TransactionName. 
+
+--Otra instrucción fuera de la transacción con nombre inserta dos filas. 
+
+--La consulta devuelve los resultados de las instrucciones anteriores.
+
+USE tempdb;  
+GO  
+CREATE TABLE ValueTable ([value] INT);  
+GO  
+  
+DECLARE @TransactionName VARCHAR(20) = 'Transaction1';  
+  
+BEGIN TRAN @TransactionName  
+       INSERT INTO ValueTable VALUES(1), (2);  
+ROLLBACK TRAN @TransactionName;  
+  
+INSERT INTO ValueTable VALUES(3),(4);  
+  
+SELECT [value] FROM ValueTable;  
+  
+DROP TABLE ValueTable;
